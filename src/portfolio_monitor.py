@@ -1,3 +1,6 @@
+import os
+import json
+import pandas as pd
 from datetime import datetime
 
 class Portfolio:
@@ -58,9 +61,9 @@ class Portfolio:
         print("=" * 50)
         
         
-        import os
-import json
-import pandas as pd
+        
+        
+      
 
 class PortfolioManager:
     def __init__(self, config_dir="config", data_dir="data", output_dir="outputs"):
@@ -109,3 +112,23 @@ class PortfolioManager:
         filepath = os.path.join(self.config_dir, "portfolio_config.json")
         with open(filepath, "w") as f:
             json.dump(config, f, indent=4)
+            
+    def load_returns_from_csv(self, filename):
+     """
+     Load daily returns from a CSV file.
+     Assumes a single column of returns.
+     """
+     self.data_dir = "data"
+     filepath = os.path.join(self.data_dir, filename)
+     df = pd.read_csv(filepath)
+     returns = df.iloc[:, 0]  # First column
+     return returns          
+ 
+    def load_benchmark_returns(self, filename):
+     """
+     Load benchmark daily returns from CSV.
+     """
+     filepath = os.path.join(self.data_dir, filename)
+     df = pd.read_csv(filepath)
+     returns = df.iloc[:, 0]
+     return returns 
