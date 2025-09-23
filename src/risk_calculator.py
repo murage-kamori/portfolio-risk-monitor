@@ -30,3 +30,12 @@ class RiskCalculator:
         max_dd = drawdown.min()
         return round(max_dd, 4)
     
+    def calculate_sharpe_ratio(self, risk_free_rate=0.01):
+     """
+     Sharpe ratio using mean excess return over volatility.
+     Assumes daily returns and annualizes.
+     """
+     excess_return = self.returns.mean() * 252 - risk_free_rate
+     volatility = self.returns.std() * np.sqrt(252)
+     sharpe = excess_return / volatility if volatility != 0 else np.nan
+     return round(sharpe, 4)
