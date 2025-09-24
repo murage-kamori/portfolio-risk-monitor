@@ -64,3 +64,20 @@ print("Max Drawdown:", benchmark_rc.calculate_max_drawdown())
 print("Sharpe Ratio:", benchmark_rc.calculate_sharpe_ratio())
 
 viz.plot_comparison(benchmark_returns)
+
+from src.portfolio_monitor import PortfolioManager
+import pandas as pd
+
+manager = PortfolioManager(config_dir="demo_portfolio/config")
+csv_portfolio = manager.load_portfolio_from_csv("sample_portfolio.csv", "Demo Portfolio")
+
+# Load returns
+tech_returns = pd.read_csv("data/tech.csv", index_col=0, parse_dates=True)["returns"]
+energy_returns = pd.read_csv("data/energy.csv", index_col=0, parse_dates=True)["returns"]
+
+# Add portfolios
+manager.add_portfolio("Tech", tech_returns)
+manager.add_portfolio("Energy", energy_returns)
+
+# Compare volatility
+manager.compare_volatility(window=20)

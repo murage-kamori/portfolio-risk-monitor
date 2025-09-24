@@ -59,19 +59,49 @@ class Portfolio:
         for symbol, qty in self.holdings.items():
             print(f"  {symbol}: {qty} shares")
         print("=" * 50)
-        
-        
-        
-        
-      
+           
 
 class PortfolioManager:
-    def __init__(self, config_dir="config", data_dir="data", output_dir="outputs"):
+    def __init__(self,config_dir="config"):
+        self.data_dir = "data"
         self.config_dir = config_dir
-        self.data_dir = data_dir
-        self.output_dir = output_dir
-        self.ensure_directories()
-
+        self.portfolios = {}
+                
+    def add_portfolio(self, name, returns):
+        """
+        Add a portfolio with a uique nameand its returns series.
+        """
+        self.portfolios[name] = Portfolio(returns, name)
+    
+    def get_portfolio(self, name):
+        return self.portfolios.get(name)
+    
+    def list_portfolios(self):
+        return list(self.portfolios.keys())
+    
+    def compare_volatility(self, window=20):
+        """
+        Compare rolling volatility of all portfolios.
+        """
+        import matplotlib.pyplot as plt
+        import numpy as np
+        
+        plt.figur(figsize=(10, 5))
+        for name, portfolio in self.portfolios.items():
+            rolling_vol = portfolio.returns.rolling(window).std() * np.sqrt(252)
+            plt.plot(rolling_vol, label=name)
+            
+        plt.title(f"Rolling {window}-Day Volatility Comparison")
+        plt.xlabel("Date")
+        plt.ylabel("Annualized Volatility")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+        
+        vol_df = pd.DataFrame()
+        for name, portfolio in self.portfolios.items():
+            vol_df[name] = portfolio.returns.rolling(window).std() * (252 ** 0.5)
+        return vol_df
     def ensure_directories(self):
         """
         Create necessary folders if they don't exist.

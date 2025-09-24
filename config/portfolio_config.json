@@ -1,8 +1,8 @@
 {
     "name": "Demo Portfolio",
     "benchmark": "SPY",
-    "created_date": "2025-09-24 01:54:16",
-    "last_updated": "2025-09-24 01:54:16",
+    "created_date": "2025-09-25 00:37:31",
+    "last_updated": "2025-09-25 00:37:31",
     "holdings": {
         "AAPL": 100,
         "GOOGL": 50,
