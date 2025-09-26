@@ -1,12 +1,12 @@
 import argparse
-from portfolio_monitor import PortfolioManager
+from portfolio_monitor.py import PortfolioManager
 from risk_visualizer import plot_comparison
 
 def main():
     #set up arguments
     parser = argparse.ArgumentParser(description="Run portfolio risk analysis from the terminal.")
-    parser.add_argument("--portfolio", required=True, help="Path to the portfolio csv file.")")
-    parser.add argument("--name", required=True, help="Name of the portfolio.")
+    parser.add_argument("--portfolio", required=True, help="Path to the portfolio csv file.")
+    parser.add_argument("--name", required=True, help="Name of the portfolio.")
     parser.add_argument("--benchmark", help="Path to the benchmark csv file(Optional).")
     parser.add_argument("--window", type=int, default=21, help="Rolling window size (default: 21).")
     parser.add_argument("--config_dir", default="config", help="Directory to save config(default: config).")
@@ -36,3 +36,6 @@ def main():
         
 if__name__ == "__main__"
 main()        
+
+if args.save_config:
+    manager.save_config(args.name, args.portfolio)
