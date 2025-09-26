@@ -162,3 +162,20 @@ class PortfolioManager:
      df = pd.read_csv(filepath)
      returns = df.iloc[:, 0]
      return returns 
+ 
+ import json
+ import os
+ from datetime import datetime
+ 
+  def save_config(self, name, filename):
+      config = {
+          "name": name,
+        "filename": filename,
+        "timestamp": datetime.now().isoformat()
+    }
+    os.makedirs(self.config_dir, exist_ok=True)
+    path = os.path.join(self.config_dir, f"{name}_config.json")
+    with open(path, "w") as f:
+        json.dump(config, f, indent=4)
+    print(f"✅ Config saved to {path}")
+      }
