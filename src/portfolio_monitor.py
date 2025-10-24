@@ -116,7 +116,7 @@ class PortfolioManager:
         Load portfolio holdings from a CSV file.
         Returns a Portfolio object.
         """
-        filepath = os.path.join(self.data_dir, filename)
+        filepath = filename if os.path.exists(filename) else os.path.join(self.data_dir, filename)
         df = pd.read_csv(filepath)
 
         holdings = {}
@@ -154,28 +154,18 @@ class PortfolioManager:
      returns = df.iloc[:, 0]  # First column
      return returns          
  
+    
     def load_benchmark_returns(self, filename):
-     """
-     Load benchmark daily returns from CSV.
-     """
-     filepath = os.path.join(self.data_dir, filename)
-     df = pd.read_csv(filepath)
-     returns = df.iloc[:, 0]
-     return returns 
- 
- import json
- import os
- from datetime import datetime
- 
-  def save_config(self, name, filename):
-      config = {
-          "name": name,
-        "filename": filename,
-        "timestamp": datetime.now().isoformat()
-    }
-    os.makedirs(self.config_dir, exist_ok=True)
-    path = os.path.join(self.config_dir, f"{name}_config.json")
-    with open(path, "w") as f:
-        json.dump(config, f, indent=4)
-    print(f"✅ Config saved to {path}")
-      }
+    
+            filepath = os.path.join(self.data_dir, filename)
+            df = pd.read_csv(filepath)
+            returns = df.iloc[:, 0]
+            return returns 
+
+
+    def get_portfolio_returns(self, name):
+     portfolio = self.get_portfolio(name)
+     return portfolio.returns if portfolio else None
+
+
+

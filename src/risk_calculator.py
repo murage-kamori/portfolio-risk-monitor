@@ -39,3 +39,19 @@ class RiskCalculator:
      volatility = self.returns.std() * np.sqrt(252)
      sharpe = excess_return / volatility if volatility != 0 else np.nan
      return round(sharpe, 4)
+ 
+    def calculate_expected_shortfall(self, confidence_level=0.95):
+     var_threshold = np.percentile(self.returns, (1 - confidence_level) * 100)
+     tail_losses = self.returns[self.returns <= var_threshold]
+     es = tail_losses.mean() if not tail_losses.empty else var_threshold
+     return round(es, 4)
+
+    def calculate_rolling_correlation(returns_df, window=21):
+     return returns_df.rolling(window).corr()
+ 
+    def calculate_sortino_ratio(self, risk_free_rate=0.01):
+     downside_returns = self.returns[self.returns < 0]
+     downside_std = downside_returns.std() * np.sqrt(252)
+     excess_return = self.returns.mean() * 252 - risk_free_rate
+     sortino = excess_return / downside_std if downside_std != 0 else np.nan
+     return round(sortino, 4)
